@@ -61,8 +61,8 @@ if len(missing_data_countries) > 0:
 source = alt.topo_feature(data.world_110m.url, 'countries')
 
 # Map configuration
-width = 1000
-height = 600
+width = 600
+height = 300
 project = 'equirectangular'
 
 # Background map
@@ -111,13 +111,13 @@ factor_scale = alt.Scale(domain=[df2[factor].min(), df2[factor].max()], scheme='
 chart_factor = chart_base.mark_geoshape().encode(
     color=alt.Color(field=factor, type="quantitative", scale=factor_scale,
                     legend=alt.Legend(
-                        title=factor,  # Keep the full title
-                        labelLimit=200,  # Adjust this for label truncation width (increase to avoid truncation)
-                        titleLimit=250,  # Limit title width
-                        labelFontSize=12,  # Control label font size
-                        titleFontSize=14,  # Control title font size
-                        labelOverlap="greedy",  # Adjust overlapping labels
-                        orient="right"  # You can change the orientation (e.g., "bottom", "right")
+                        title=factor,  
+                        labelLimit=200, 
+                        titleLimit=250,  
+                        labelFontSize=12,  
+                        titleFontSize=14,  
+                        labelOverlap="greedy", 
+                        orient="right" 
                     )),
     tooltip=[alt.Tooltip('Country:N', title='Country'),
              alt.Tooltip(f'{factor}:Q', title=f'{factor}')]
