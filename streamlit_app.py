@@ -7,6 +7,21 @@ from vega_datasets import data
 url = 'https://raw.githubusercontent.com/xyzhang09/BMI706_Project/main/clean_Life_Expectancy_Data.csv'
 df = pd.read_csv(url)
 
+df.rename(columns={
+    'infant deaths': 'Infant Deaths',
+    'Life expectancy ': 'Life Expectancy',
+    'percentage expenditure': 'Percentage Expenditure', 
+    ' BMI ': 'BMI',
+    'Measles ': 'Measles',
+    'under-five deaths ':'Under-Five Deaths',
+    'Total expenditure': 'Total Expenditure',
+    'Diphtheria ':'Diphtheria',
+    ' HIV/AIDS': 'HIV/AIDS',
+    ' thinness  1-19 years': 'Thinness 1-19 Years',
+    ' thinness 5-9 years': 'Thinness 5-9 Years',
+    'Income composition of resources': 'Income Composition of Resources'
+}, inplace=True)
+
 # Streamlit app title
 st.title("Life Expectancy Comparison Dashboard")
 
@@ -18,7 +33,7 @@ year = st.slider('Select Year', int(df_clean['Year'].min()), int(df_clean['Year'
 
 # User input: Select the factor to compare with Life Expectancy
 factor = st.selectbox('Select a factor to compare with Life Expectancy', 
-                      ['Adult Mortality', 'Population', 'GDP', 'infant deaths', 'Alcohol'])
+                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol'])
 
 
 # User input: Select countries (multi-select)
@@ -68,17 +83,17 @@ chart_base = alt.Chart(source).properties(
     selector
 ).transform_lookup(
     lookup="id",
-    from_=alt.LookupData(df2, "country-code", ["Life expectancy ", 'Country', factor, 'Year']),
+    from_=alt.LookupData(df2, "country-code", ["Life Expectancy", 'Country', factor, 'Year']),
 )
 
 # Life Expectancy Chart
-le_scale = alt.Scale(domain=[df2['Life expectancy '].min(), df2['Life expectancy '].max()], scheme='oranges')
-le_color = alt.Color(field="Life expectancy ", type="quantitative", scale=le_scale)
+le_scale = alt.Scale(domain=[df2['Life Expectancy'].min(), df2['Life Expectancy'].max()], scheme='oranges')
+le_color = alt.Color(field="Life Expectancy", type="quantitative", scale=le_scale)
 
 chart_le = chart_base.mark_geoshape().encode(
     color=le_color,
     tooltip=[alt.Tooltip('Country:N', title='Country'),
-             alt.Tooltip('Life expectancy :Q', title='Life Expectancy')]
+             alt.Tooltip('Life Expectancy:Q', title='Life Expectancy')]
 ).transform_filter(
     selector
 ).properties(
