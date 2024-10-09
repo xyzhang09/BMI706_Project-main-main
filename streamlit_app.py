@@ -10,11 +10,13 @@ df = pd.read_csv(url)
 df.rename(columns={
     'infant deaths': 'Infant Deaths',
     'Life expectancy ': 'Life Expectancy',
-    'percentage expenditure': 'Percentage Expenditure', 
+    'percentage expenditure': 'Percentage Expenditure on Health %', 
     ' BMI ': 'BMI',
+    'Hepatitis B': 'Hepatitis B Immunization Coverage %',
+    'Diphtheria': 'Diphtheria Immunization Coverage %',
     'Measles ': 'Measles',
     'under-five deaths ':'Under-Five Deaths',
-    'Total expenditure': 'Total Expenditure',
+    'Total expenditure': 'Government Expenditure on Health %',
     'Diphtheria ':'Diphtheria',
     ' HIV/AIDS': 'HIV/AIDS',
     ' thinness  1-19 years': 'Thinness 1-19 Years',
@@ -33,7 +35,9 @@ year = st.slider('Select Year', int(df_clean['Year'].min()), int(df_clean['Year'
 
 # User input: Select the factor to compare with Life Expectancy
 factor = st.selectbox('Select a factor to compare with Life Expectancy', 
-                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol'])
+                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 'Status',
+                       'Percentage Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
+                        'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'])
 
 
 # User input: Select countries (multi-select)
