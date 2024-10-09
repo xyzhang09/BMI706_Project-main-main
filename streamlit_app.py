@@ -10,21 +10,25 @@ df = pd.read_csv(url)
 # Streamlit app title
 st.title("Life Expectancy Comparison Dashboard")
 
-# User input: Select year
-year = st.slider('Select Year', int(df['Year'].min()), int(df['Year'].max()), 2014)
+# Remove rows without a country code
+df_clean = df.dropna(subset=['country-code'])
+
+# Proceed with the cleaned data (df_clean instead of df)
+year = st.slider('Select Year', int(df_clean['Year'].min()), int(df_clean['Year'].max()), 2014)
 
 # User input: Select the factor to compare with Life Expectancy
 factor = st.selectbox('Select a factor to compare with Life Expectancy', 
                       ['Adult Mortality', 'Population', 'GDP', 'infant deaths', 'Alcohol'])
 
+
 # User input: Select countries (multi-select)
-country_options = df['Country'].unique()
+country_options = df_clean['Country'].unique()
 selected_countries = st.multiselect('Select countries to visualize', 
                                     options=country_options, 
                                     default=['Australia', 'China', 'Canada', 'France'])
 
 # Filter the data for the selected year and countries
-df2 = df[(df['Year'] == year) & (df['Country'].isin(selected_countries))]
+df2 = df_clean[(df_clean['Year'] == year) & (df_clean['Country'].isin(selected_countries))]
 
 # Load the world topojson data from vega_datasets
 source = alt.topo_feature(data.world_110m.url, 'countries')
