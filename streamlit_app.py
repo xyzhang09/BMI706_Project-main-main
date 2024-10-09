@@ -61,8 +61,8 @@ if len(missing_data_countries) > 0:
 source = alt.topo_feature(data.world_110m.url, 'countries')
 
 # Map configuration
-width = 600
-height = 300
+width = 1000
+height = 600
 project = 'equirectangular'
 
 # Background map
