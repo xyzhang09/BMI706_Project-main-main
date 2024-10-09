@@ -30,6 +30,14 @@ selected_countries = st.multiselect('Select countries to visualize',
 # Filter the data for the selected year and countries
 df2 = df_clean[(df_clean['Year'] == year) & (df_clean['Country'].isin(selected_countries))]
 
+# Check for missing data in the selected factor
+missing_data_countries = df2[df2[factor].isna()]['Country'].unique()
+
+# If there are any countries with missing data, display a warning
+if len(missing_data_countries) > 0:
+    st.warning(f"Warning: The following countries have missing data for {factor}: {', '.join(missing_data_countries)}")
+
+
 # Load the world topojson data from vega_datasets
 source = alt.topo_feature(data.world_110m.url, 'countries')
 
