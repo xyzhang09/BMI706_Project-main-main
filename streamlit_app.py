@@ -40,7 +40,7 @@ factor = st.selectbox('Select a factor to compare with Life Expectancy',
 country_options = df_clean['Country'].unique()
 selected_countries = st.multiselect('Select countries to visualize', 
                                     options=country_options, 
-                                    default=['Australia', 'China', 'Canada', 'France'])
+                                    default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'])
 
 # Filter the data for the selected year and countries
 df2 = df_clean[(df_clean['Year'] == year) & (df_clean['Country'].isin(selected_countries))]
@@ -71,7 +71,9 @@ background = alt.Chart(source).mark_geoshape(
 ).project(project)
 
 # Multi-selector for interactivity
-selector = alt.selection_multi(fields=['Country'])
+# selector = alt.selection_multi(fields=['Country'])
+selector = alt.selection_multi(fields=['Country'], bind='legend')
+
 
 # Base chart for the Life Expectancy and selected factor
 chart_base = alt.Chart(source).properties(
