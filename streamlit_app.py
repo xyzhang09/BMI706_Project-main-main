@@ -71,8 +71,8 @@ background = alt.Chart(source).mark_geoshape(
 ).project(project)
 
 # Multi-selector for interactivity
-# selector = alt.selection_multi(fields=['Country'])
-selector = alt.selection_multi(fields=['Country'], bind='legend')
+selector = alt.selection_multi(fields=['Country'])
+
 
 
 # Base chart for the Life Expectancy and selected factor
