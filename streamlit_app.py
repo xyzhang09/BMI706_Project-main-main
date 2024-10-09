@@ -27,7 +27,9 @@ factor = st.selectbox('Select a factor to compare with Life Expectancy',
 df2 = df[df['Year'] == year]
 
 # Load the world topojson data
-source = alt.topo_feature(world_topojson, 'countries')
+# source = alt.topo_feature(world_topojson, 'countries')
+source = alt.InlineData(values=world_topojson, format=alt.DataFormat(property="objects.countries", type="topojson"))
+
 
 # Map configuration
 width = 600
