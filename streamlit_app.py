@@ -134,3 +134,57 @@ chart_combined = alt.vconcat(background + chart_le, background + chart_factor).r
 
 # Display the charts in Streamlit
 st.altair_chart(chart_combined, use_container_width=True)
+
+
+# continue to Task2
+
+# User input: Select a range of years
+years = st.slider('Select a range of years', int(df_clean['Year'].min()), int(df_clean['Year'].max()), (2000, 2015))
+
+
+# User input: Select countries (multi-select)
+country_options = df_clean['Country'].unique()
+selected_countries = st.multiselect('Select countries to visualize', options=country_options, 
+                                    default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'])
+
+# Filter the data for the selected range of years and countries
+df_filtered = df_clean[(df_clean['Year'] >= years[0]) & (df_clean['Year'] <= years[1]) & (df_clean['Country'].isin(selected_countries))]
+
+# Check for missing data in the selected factor
+missing_data_countries = df_filtered[df_filtered[factor].isna()]['Country'].unique()
+
+# If there are any countries with missing data, display a warning
+if len(missing_data_countries) > 0:
+    st.warning(f"Warning: The following countries have missing data for {factor}: {', '.join(missing_data_countries)}")
+
+# Create a line chart for Life Expectancy
+life_expectancy_chart = alt.Chart(df_filtered).mark_line().encode(
+    x='Year:O',
+    y='Life expectancy :Q',
+    color='Country:N',
+    tooltip=[alt.Tooltip('Year:O'), alt.Tooltip('Life expectancy :Q'), alt.Tooltip('Country:N')],
+).properties(
+    width=600,
+    height=300,
+    title='Life Expectancy Over Time'
+)
+
+# Create a line chart for the selected factor
+factor_chart = alt.Chart(df_filtered).mark_line().encode(
+    x='Year:O',
+    y=alt.Y(f'{factor}:Q', title=factor),
+    color='Country:N',
+    tooltip=[alt.Tooltip('Year:O'), alt.Tooltip(f'{factor}:Q'), alt.Tooltip('Country:N')],
+).properties(
+    width=600,
+    height=300,
+    title=f'{factor} Over Time'
+)
+
+# Combine the two charts vertically
+combined_chart = alt.vconcat(life_expectancy_chart, factor_chart).resolve_scale(
+    color='independent'
+)
+
+# Display the charts in Streamlit
+st.altair_chart(combined_chart, use_container_width=True)
