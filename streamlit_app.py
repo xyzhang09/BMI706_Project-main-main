@@ -13,8 +13,10 @@ topojson_url = 'https://raw.githubusercontent.com/xyzhang09/BMI706_Project/main/
 world_topojson = urllib.request.urlopen(topojson_url).read()
 world_topojson = json.loads(world_topojson)
 
+from vega_datasets import data
 
-source = alt.InlineData(values=world_topojson, format=alt.DataFormat(type="json", property="objects.countries.geometries"))
+# Use preloaded TopoJSON data from vega_datasets
+source = alt.topo_feature(data.world_110m.url, 'countries')
 
 # Minimal map example
 chart = alt.Chart(source).mark_geoshape(
@@ -25,4 +27,6 @@ chart = alt.Chart(source).mark_geoshape(
     height=300
 )
 
-st.altair_chart(chart)  
+st.altair_chart(chart)
+
+ 
