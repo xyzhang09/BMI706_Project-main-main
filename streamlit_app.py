@@ -26,7 +26,7 @@ df.rename(columns={
 }, inplace=True)
 
 # Streamlit app title
-st.title("Life Expectancy Comparison Dashboard")
+st.title("Task 1: Spatial Relationship Between Life Expectancy and Selected Factor")
 
 # Remove rows without a country code
 df_clean = df.dropna(subset=['country-code'])
@@ -138,7 +138,7 @@ st.altair_chart(chart_combined, use_container_width=True)
 
 # Task 2: Time-Series Trends Comparison
 
-st.title("Time Series Trends Comparison Between Life Expectancy and Factor Selected")
+st.title("Task 2: Temporal Trends of Life Expectancy and Selected Factor")
 
 # Year range selection with unique key
 years = st.slider('Select a range of years', int(df_clean['Year'].min()), int(df_clean['Year'].max()), (2000, 2015), key='year_range_slider')
