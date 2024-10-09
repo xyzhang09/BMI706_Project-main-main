@@ -7,6 +7,7 @@ from vega_datasets import data
 url = 'https://raw.githubusercontent.com/xyzhang09/BMI706_Project/main/clean_Life_Expectancy_Data.csv'
 df = pd.read_csv(url)
 
+# Renaming columns for clarity
 df.rename(columns={
     'infant deaths': 'Infant Deaths',
     'Life expectancy ': 'Life Expectancy',
@@ -30,21 +31,24 @@ st.title("Life Expectancy Comparison Dashboard")
 # Remove rows without a country code
 df_clean = df.dropna(subset=['country-code'])
 
-# Proceed with the cleaned data (df_clean instead of df)
-year = st.slider('Select Year', int(df_clean['Year'].min()), int(df_clean['Year'].max()), 2014)
+# Task 1: Map Visualization
 
-# User input: Select the factor to compare with Life Expectancy
+# Year selection
+year = st.slider('Select Year', int(df_clean['Year'].min()), int(df_clean['Year'].max()), 2014, key='year_slider')
+
+# Factor selection with a unique key
 factor = st.selectbox('Select a factor to compare with Life Expectancy', 
                       ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 
                        'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
-                        'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'])
+                        'Government Expenditure on Health %', 'Diphtheria Immunization Coverage %', 'Schooling'],
+                      key='factor_selection_1')
 
-
-# User input: Select countries (multi-select)
+# Country selection with unique key
 country_options = df_clean['Country'].unique()
 selected_countries = st.multiselect('Select countries to visualize', 
                                     options=country_options, 
-                                    default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'])
+                                    default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'],
+                                    key='country_selection_1')
 
 # Filter the data for the selected year and countries
 df2 = df_clean[(df_clean['Year'] == year) & (df_clean['Country'].isin(selected_countries))]
@@ -52,10 +56,9 @@ df2 = df_clean[(df_clean['Year'] == year) & (df_clean['Country'].isin(selected_c
 # Check for missing data in the selected factor
 missing_data_countries = df2[df2[factor].isna()]['Country'].unique()
 
-# If there are any countries with missing data, display a warning
+# Display warning for missing data
 if len(missing_data_countries) > 0:
     st.warning(f"Warning: The following countries have missing data for {factor}: {', '.join(missing_data_countries)}")
-
 
 # Load the world topojson data from vega_datasets
 source = alt.topo_feature(data.world_110m.url, 'countries')
@@ -76,8 +79,6 @@ background = alt.Chart(source).mark_geoshape(
 
 # Multi-selector for interactivity
 selector = alt.selection_multi(fields=['Country'])
-
-
 
 # Base chart for the Life Expectancy and selected factor
 chart_base = alt.Chart(source).properties(
@@ -135,26 +136,25 @@ chart_combined = alt.vconcat(background + chart_le, background + chart_factor).r
 # Display the charts in Streamlit
 st.altair_chart(chart_combined, use_container_width=True)
 
+# Task 2: Time-Series Trends Comparison
 
-# continue to Task2
-
-# Streamlit app title
 st.title("Time Series Trends Comparison Between Life Expectancy and Factor Selected")
 
-# User input: Select a range of years
-years = st.slider('Select a range of years', int(df_clean['Year'].min()), int(df_clean['Year'].max()), (2000, 2015))
+# Year range selection with unique key
+years = st.slider('Select a range of years', int(df_clean['Year'].min()), int(df_clean['Year'].max()), (2000, 2015), key='year_range_slider')
 
-# User input: Select the factor to compare with Life Expectancy
+# Factor selection with a unique key
 factor2 = st.selectbox('Select a factor to compare with Life Expectancy', 
                       ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 
                        'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
-                        'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'])
+                        'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'],
+                      key='factor_selection_2')
 
-# User input: Select countries (multi-select)
-# country_options2 = df_clean['Country'].unique()
+# Country selection with unique key
 selected_countries2 = st.multiselect('Select countries to visualize', 
                                     options=country_options, 
-                                    default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'])
+                                    default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'],
+                                    key='country_selection_2')
 
 # Filter the data for the selected range of years and countries
 df_filtered = df_clean[(df_clean['Year'] >= years[0]) & (df_clean['Year'] <= years[1]) & (df_clean['Country'].isin(selected_countries2))]
@@ -162,16 +162,16 @@ df_filtered = df_clean[(df_clean['Year'] >= years[0]) & (df_clean['Year'] <= yea
 # Check for missing data in the selected factor
 missing_data_countries2 = df_filtered[df_filtered[factor2].isna()]['Country'].unique()
 
-# If there are any countries with missing data, display a warning
+# Display warning for missing data
 if len(missing_data_countries2) > 0:
     st.warning(f"Warning: The following countries have missing data for {factor2}: {', '.join(missing_data_countries2)}")
 
 # Create a line chart for Life Expectancy
 life_expectancy_line = alt.Chart(df_filtered).mark_line().encode(
     x='Year:O',
-    y='Life expectancy :Q',
+    y='Life Expectancy:Q',
     color='Country:N',
-    tooltip=[alt.Tooltip('Year:O'), alt.Tooltip('Life expectancy :Q'), alt.Tooltip('Country:N')],
+    tooltip=[alt.Tooltip('Year:O'), alt.Tooltip('Life Expectancy:Q'), alt.Tooltip('Country:N')],
 ).properties(
     width=600,
     height=300,
