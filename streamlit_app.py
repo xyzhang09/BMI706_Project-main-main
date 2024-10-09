@@ -153,7 +153,7 @@ factor2 = st.selectbox('Select a factor to compare with Life Expectancy',
 # Country selection with unique key
 selected_countries2 = st.multiselect('Select countries to visualize', 
                                     options=country_options, 
-                                    default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'],
+                                    default=['Australia', 'China', 'Canada'],
                                     key='country_selection_2')
 
 # Filter the data for the selected range of years and countries
