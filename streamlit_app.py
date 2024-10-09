@@ -10,7 +10,7 @@ df = pd.read_csv(url)
 df.rename(columns={
     'infant deaths': 'Infant Deaths',
     'Life expectancy ': 'Life Expectancy',
-    'percentage expenditure': 'Percentage Expenditure on Health %', 
+    'percentage expenditure': 'GDP Expenditure on Health %', 
     ' BMI ': 'BMI',
     'Hepatitis B': 'Hepatitis B Immunization Coverage %',
     'Diphtheria': 'Diphtheria Immunization Coverage %',
@@ -35,8 +35,8 @@ year = st.slider('Select Year', int(df_clean['Year'].min()), int(df_clean['Year'
 
 # User input: Select the factor to compare with Life Expectancy
 factor = st.selectbox('Select a factor to compare with Life Expectancy', 
-                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 'Status',
-                       'Percentage Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
+                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 
+                       'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
                         'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'])
 
 
@@ -109,7 +109,16 @@ chart_le = chart_base.mark_geoshape().encode(
 # Selected Factor Chart
 factor_scale = alt.Scale(domain=[df2[factor].min(), df2[factor].max()], scheme='yellowgreenblue')
 chart_factor = chart_base.mark_geoshape().encode(
-    color=alt.Color(field=factor, type="quantitative", scale=factor_scale),
+    color=alt.Color(field=factor, type="quantitative", scale=factor_scale,
+                    legend=alt.Legend(
+                        title=factor,  # Keep the full title
+                        labelLimit=200,  # Adjust this for label truncation width (increase to avoid truncation)
+                        titleLimit=250,  # Limit title width
+                        labelFontSize=12,  # Control label font size
+                        titleFontSize=14,  # Control title font size
+                        labelOverlap="greedy",  # Adjust overlapping labels
+                        orient="right"  # You can change the orientation (e.g., "bottom", "right")
+                    )),
     tooltip=[alt.Tooltip('Country:N', title='Country'),
              alt.Tooltip(f'{factor}:Q', title=f'{factor}')]
 ).transform_filter(
