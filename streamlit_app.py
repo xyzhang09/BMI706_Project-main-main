@@ -1,9 +1,7 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-from vega_datasets import data  # Using vega_datasets now for world map data
-import json
-import urllib.request
+from vega_datasets import data
 
 # Load data from the URL
 url = 'https://raw.githubusercontent.com/xyzhang09/BMI706_Project/main/clean_Life_Expectancy_Data.csv'
@@ -19,8 +17,12 @@ year = st.slider('Select Year', int(df['Year'].min()), int(df['Year'].max()), 20
 factor = st.selectbox('Select a factor to compare with Life Expectancy', 
                       ['Adult Mortality', 'Population', 'GDP', 'infant deaths', 'Alcohol'])
 
-# Filter the data for the selected year
-df2 = df[df['Year'] == year]
+# User input: Select countries (multi-select)
+country_options = df['Country'].unique()
+selected_countries = st.multiselect('Select countries to visualize', options=country_options, default=country_options)
+
+# Filter the data for the selected year and countries
+df2 = df[(df['Year'] == year) & (df['Country'].isin(selected_countries))]
 
 # Load the world topojson data from vega_datasets
 source = alt.topo_feature(data.world_110m.url, 'countries')
@@ -39,11 +41,8 @@ background = alt.Chart(source).mark_geoshape(
     height=height
 ).project(project)
 
-# Selector for interactivity
-selector = alt.selection_single(
-    fields=['Country'],
-    on='click'
-)
+# Multi-selector for interactivity
+selector = alt.selection_multi(fields=['Country'])
 
 # Base chart for the Life Expectancy and selected factor
 chart_base = alt.Chart(source).properties(
