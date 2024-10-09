@@ -25,4 +25,4 @@ chart = alt.Chart(source).mark_geoshape(
     height=300
 )
 
-chart.show()  # or st.altair_chart(chart) in Streamlit
+st.altair_chart(chart)  
