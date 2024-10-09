@@ -28,7 +28,8 @@ df2 = df[df['Year'] == year]
 
 # Load the world topojson data
 # source = alt.topo_feature(world_topojson, 'countries')
-source = alt.InlineData(values=world_topojson, format=alt.DataFormat(property="objects.countries", type="topojson"))
+# source = alt.InlineData(values=world_topojson, format=alt.DataFormat(property="objects.countries", type="topojson"))
+source = alt.InlineData(values=world_topojson, format=alt.DataFormat(type="json", property="objects.countries.geometries"))
 
 
 # Map configuration
