@@ -1,11 +1,18 @@
+import streamlit as st
+import pandas as pd
 import altair as alt
 import json
 import urllib.request
 
-# Load the world topojson data
-topojson_url = 'https://raw.githubusercontent.com/your_github_repo/world_110m_topo.json'
+# Load data from the URL
+url = 'https://raw.githubusercontent.com/xyzhang09/BMI706_Project/main/clean_Life_Expectancy_Data.csv'
+df = pd.read_csv(url)
+
+# Load the world topojson data from a local file or URL
+topojson_url = 'https://raw.githubusercontent.com/xyzhang09/BMI706_Project/main/world_110m_topo.json'
 world_topojson = urllib.request.urlopen(topojson_url).read()
 world_topojson = json.loads(world_topojson)
+
 
 source = alt.InlineData(values=world_topojson, format=alt.DataFormat(type="json", property="objects.countries.geometries"))
 
