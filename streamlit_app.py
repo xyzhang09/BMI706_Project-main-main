@@ -138,27 +138,36 @@ st.altair_chart(chart_combined, use_container_width=True)
 
 # continue to Task2
 
+# Streamlit app title
+st.title("Time Series Trends Comparison Between Life Expectancy and Factor Selected")
+
 # User input: Select a range of years
 years = st.slider('Select a range of years', int(df_clean['Year'].min()), int(df_clean['Year'].max()), (2000, 2015))
 
+# User input: Select the factor to compare with Life Expectancy
+factor2 = st.selectbox('Select a factor to compare with Life Expectancy', 
+                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 
+                       'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
+                        'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'])
 
 # User input: Select countries (multi-select)
-country_options = df_clean['Country'].unique()
-selected_countries = st.multiselect('Select countries to visualize', options=country_options, 
+# country_options2 = df_clean['Country'].unique()
+selected_countries2 = st.multiselect('Select countries to visualize', 
+                                    options=country_options, 
                                     default=['Australia', 'China', 'Canada', 'France', 'India', 'Brazil'])
 
 # Filter the data for the selected range of years and countries
-df_filtered = df_clean[(df_clean['Year'] >= years[0]) & (df_clean['Year'] <= years[1]) & (df_clean['Country'].isin(selected_countries))]
+df_filtered = df_clean[(df_clean['Year'] >= years[0]) & (df_clean['Year'] <= years[1]) & (df_clean['Country'].isin(selected_countries2))]
 
 # Check for missing data in the selected factor
-missing_data_countries = df_filtered[df_filtered[factor].isna()]['Country'].unique()
+missing_data_countries2 = df_filtered[df_filtered[factor2].isna()]['Country'].unique()
 
 # If there are any countries with missing data, display a warning
-if len(missing_data_countries) > 0:
-    st.warning(f"Warning: The following countries have missing data for {factor}: {', '.join(missing_data_countries)}")
+if len(missing_data_countries2) > 0:
+    st.warning(f"Warning: The following countries have missing data for {factor2}: {', '.join(missing_data_countries2)}")
 
 # Create a line chart for Life Expectancy
-life_expectancy_chart = alt.Chart(df_filtered).mark_line().encode(
+life_expectancy_line = alt.Chart(df_filtered).mark_line().encode(
     x='Year:O',
     y='Life expectancy :Q',
     color='Country:N',
@@ -170,19 +179,19 @@ life_expectancy_chart = alt.Chart(df_filtered).mark_line().encode(
 )
 
 # Create a line chart for the selected factor
-factor_chart = alt.Chart(df_filtered).mark_line().encode(
+factor_line_chart = alt.Chart(df_filtered).mark_line().encode(
     x='Year:O',
-    y=alt.Y(f'{factor}:Q', title=factor),
+    y=alt.Y(f'{factor2}:Q', title=factor2),
     color='Country:N',
-    tooltip=[alt.Tooltip('Year:O'), alt.Tooltip(f'{factor}:Q'), alt.Tooltip('Country:N')],
+    tooltip=[alt.Tooltip('Year:O'), alt.Tooltip(f'{factor2}:Q'), alt.Tooltip('Country:N')],
 ).properties(
     width=600,
     height=300,
-    title=f'{factor} Over Time'
+    title=f'{factor2} Over Time'
 )
 
 # Combine the two charts vertically
-combined_chart = alt.vconcat(life_expectancy_chart, factor_chart).resolve_scale(
+combined_chart = alt.vconcat(life_expectancy_line, factor_line_chart).resolve_scale(
     color='independent'
 )
 
