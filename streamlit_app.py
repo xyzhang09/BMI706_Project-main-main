@@ -19,7 +19,9 @@ factor = st.selectbox('Select a factor to compare with Life Expectancy',
 
 # User input: Select countries (multi-select)
 country_options = df['Country'].unique()
-selected_countries = st.multiselect('Select countries to visualize', options=country_options, default=country_options)
+selected_countries = st.multiselect('Select countries to visualize', 
+                                    options=country_options, 
+                                    default=['Australia', 'China', 'Canada', 'France'])
 
 # Filter the data for the selected year and countries
 df2 = df[(df['Year'] == year) & (df['Country'].isin(selected_countries))]
