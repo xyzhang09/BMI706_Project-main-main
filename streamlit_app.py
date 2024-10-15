@@ -178,16 +178,17 @@ feature_aggregation = {
     'Adult Mortality': 'mean',
     'Population': 'sum',  
     'GDP': 'mean',
-    'infant deaths': 'sum',  
+    'Infant Deaths': 'sum',  
     'Alcohol': 'mean',
-    'percentage expenditure': 'mean',
-    'Hepatitis B': 'mean',
-    ' BMI ': 'mean',
-    'Total expenditure': 'mean',
-    'Diphtheria ': 'mean',
+    'GDP Expenditure on Health %': 'mean',
+    'Hepatitis B Immunization Coverage %': 'mean',
+    'BMI': 'mean',
+    'Government Expenditure on Health %': 'mean',
+    'Diphtheria': 'mean',
     'Schooling': 'mean',
-    'Life expectancy ': 'mean'
+    'Life Expectancy': 'mean'
 }
+
 
 
 aggregated_data = pd.DataFrame()
@@ -200,10 +201,10 @@ for feature, agg_func in feature_aggregation.items():
     aggregated_data = pd.concat([aggregated_data, feature_data], ignore_index=True)
 
 
-life_expectancy_data = aggregated_data[aggregated_data['Feature'] == 'Life expectancy ']
+life_expectancy_data = aggregated_data[aggregated_data['Feature'] == 'Life Expectancy']
 
 
-feature_list = [feature for feature in aggregated_data['Feature'].unique() if feature != 'Life expectancy ']
+feature_list = [feature for feature in aggregated_data['Feature'].unique() if feature != 'Life Expectancy']
 selected_feature = st.selectbox('Select a feature to compare with Life Expectancy', feature_list)
 
 
