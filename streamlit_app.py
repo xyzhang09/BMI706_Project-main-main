@@ -188,7 +188,6 @@ feature_aggregation = {
     'Hepatitis B Immunization Coverage %': 'mean',
     'BMI': 'mean',
     'Government Expenditure on Health %': 'mean',
-    'Diphtheria': 'mean',
     'Schooling': 'mean',
     'Life Expectancy': 'mean'
 }
@@ -209,7 +208,7 @@ life_expectancy_data = aggregated_data[aggregated_data['Feature'] == 'Life Expec
 
 
 feature_list = [feature for feature in aggregated_data['Feature'].unique() if feature != 'Life Expectancy']
-selected_feature = st.selectbox('Select a feature to compare with Life Expectancy', feature_list)
+selected_feature = st.selectbox('Select a factor to compare with Life Expectancy', feature_list)
 
 
 selected_feature_data = aggregated_data[(aggregated_data['Feature'] == selected_feature)]
