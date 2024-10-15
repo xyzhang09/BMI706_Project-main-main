@@ -35,7 +35,8 @@ year = st.slider('Select Year', int(df_clean['Year'].min()), int(df_clean['Year'
 
 # factor selector
 factor = st.selectbox('Select a factor to compare with Life Expectancy', 
-                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 
+                      ['Adult Mortality', 'Population', 'GDP', #'Infant Deaths', 
+                      'Alcohol', 
                        'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
                         'Government Expenditure on Health %', 'Diphtheria Immunization Coverage %', 'Schooling'],
                       key='factor_selection_1')
@@ -128,7 +129,8 @@ st.title("Task 2: Temporal Trends of Life Expectancy and Selected Factor")
 years = st.slider('Select a range of years', int(df_clean['Year'].min()), int(df_clean['Year'].max()), (2000, 2015), key='year_range_slider')
 
 factor2 = st.selectbox('Select a factor to compare with Life Expectancy', 
-                      ['Adult Mortality', 'Population', 'GDP', 'Infant Deaths', 'Alcohol', 
+                      ['Adult Mortality', 'Population', 'GDP', #'Infant Deaths',
+                       'Alcohol', 
                        'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
                         'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'],
                       key='factor_selection_2')
@@ -174,11 +176,13 @@ combined_chart = alt.vconcat(life_expectancy_line, factor_line_chart).resolve_sc
 st.altair_chart(combined_chart, use_container_width=True)
 
 # Task 3:
+st.title("Task 3: Global Trends of Life Expectancy and Selected Factor")
+
 feature_aggregation = {
     'Adult Mortality': 'mean',
     'Population': 'sum',  
     'GDP': 'mean',
-    'Infant Deaths': 'sum',  
+    # 'Infant Deaths': 'sum',  
     'Alcohol': 'mean',
     'GDP Expenditure on Health %': 'mean',
     'Hepatitis B Immunization Coverage %': 'mean',
@@ -214,7 +218,7 @@ selected_feature_data = aggregated_data[(aggregated_data['Feature'] == selected_
 # Left chart: Selected Feature 
 selected_feature_chart = alt.Chart(selected_feature_data).mark_bar(color='black').encode(
     x=alt.X('Value:Q', axis=alt.Axis(title=selected_feature), scale=alt.Scale(reverse=True)),
-    y=alt.Y('Year:O', sort='-x', axis=alt.Axis(labels=False, ticks=False))
+    y=alt.Y('Year:O', sort='-x', axis=alt.Axis(labels=False, ticks=False),title=None)
 ).properties(
     width=300,
     height=400
@@ -223,7 +227,7 @@ selected_feature_chart = alt.Chart(selected_feature_data).mark_bar(color='black'
 # Right chart: Life Expectancy
 life_expectancy_chart = alt.Chart(life_expectancy_data).mark_bar(color='green').encode(
     x=alt.X('Value:Q', title='Life Expectancy'),
-    y=alt.Y('Year:O', sort='-x', title= None)  # Only one chart will have the y-axis title
+    y=alt.Y('Year:O', sort='-x', title= None)  
 ).properties(
     width=300,
     height=400
