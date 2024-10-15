@@ -38,7 +38,7 @@ factor = st.selectbox('Select a factor to compare with Life Expectancy',
                       ['Adult Mortality', 'Population', 'GDP', #'Infant Deaths', 
                       'Alcohol', 
                        'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
-                        'Government Expenditure on Health %', 'Diphtheria Immunization Coverage %', 'Schooling'],
+                        'Government Expenditure on Health %', 'Schooling'],
                       key='factor_selection_1')
 
 # country selector
@@ -129,10 +129,10 @@ st.title("Task 2: Temporal Trends of Life Expectancy and Selected Factor")
 years = st.slider('Select a range of years', int(df_clean['Year'].min()), int(df_clean['Year'].max()), (2000, 2015), key='year_range_slider')
 
 factor2 = st.selectbox('Select a factor to compare with Life Expectancy', 
-                      ['Adult Mortality', 'Population', 'GDP', #'Infant Deaths',
-                       'Alcohol', 
+                      ['Schooling', 'Adult Mortality', 'Population', 'GDP', #'Infant Deaths',
+                      'Alcohol', 
                        'GDP Expenditure on Health %', 'Hepatitis B Immunization Coverage %', 'BMI',
-                        'Government Expenditure on Health %',  'Diphtheria Immunization Coverage %', 'Schooling'],
+                        'Government Expenditure on Health %'],
                       key='factor_selection_2')
 
 selected_countries2 = st.multiselect('Select countries to visualize', 
