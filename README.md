@@ -4,8 +4,12 @@ This project was created for the Harvard Medical School course BMI706: Data Visu
 This project visualizes life expectancy and related health, social, economic factors across different countries using interactive dashboards built with Streamlit. The visualizations include interactive plots that allow users to explore life expectancy trends and compare various health indicators over time.
 
 **Team members:**
+
 Alice (Xiaoyue) Zhang
+
 Yiran Fu
+
+
 
 **Streamlit App**
 
