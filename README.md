@@ -7,8 +7,12 @@ This project visualizes life expectancy and related health, social, economic fac
 Alice (Xiaoyue) Zhang
 Yiran Fu
 
+**Streamlit App**
+
 The visualization through Streamlit app can be found here: https://bmi706project-main-main-bsjwm7sfyojddvvqu6vtpx.streamlit.app/ 
 
+
 **Data Sources**
+
 The data used in this project comes from Kaggle: https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who 
 
